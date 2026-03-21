@@ -6,7 +6,56 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Check, Copy } from 'lucide-react';
 
 function formatTime(ts) {
-  return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  }).format(new Date(ts));
+}
+
+function CodeBlock({ node, inline, className, children, ...props }) {
+  const [isCopied, setIsCopied] = useState(false);
+  const match = /language-(\w+)/.exec(className || '');
+  const codeString = String(children).replace(/\n$/, '');
+  
+  const handleCopyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(codeString);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch {}
+  };
+
+  if (!inline && match) {
+    return (
+      <div className="relative mt-4 mb-4 rounded-xl overflow-hidden border border-[#2d2d45] bg-[#1e1e1e] group/code">
+        <div className="flex items-center justify-between px-4 py-1.5 bg-[#2d2d45]/50 border-b border-[#2d2d45]">
+          <span className="text-[10px] font-mono font-medium text-gray-400 uppercase tracking-wider">{match[1]}</span>
+          <button 
+            onClick={handleCopyCode}
+            className={`flex items-center gap-1.5 text-[10px] transition-colors ${isCopied ? 'text-green-400' : 'text-gray-400 hover:text-white'}`}
+          >
+            {isCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+            <span>{isCopied ? 'Copied!' : 'Copy code'}</span>
+          </button>
+        </div>
+        <SyntaxHighlighter
+          {...props}
+          style={vscDarkPlus}
+          language={match[1]}
+          PreTag="div"
+          customStyle={{ margin: 0, padding: '1rem', background: 'transparent' }}
+        >
+          {codeString}
+        </SyntaxHighlighter>
+      </div>
+    );
+  }
+  return (
+    <code {...props} className={className}>
+      {children}
+    </code>
+  );
 }
 
 export default function MessageBubble({ message }) {
@@ -64,51 +113,7 @@ export default function MessageBubble({ message }) {
             <ReactMarkdown 
               remarkPlugins={[remarkGfm]}
               components={{
-                code({ node, inline, className, children, ...props }) {
-                  const match = /language-(\w+)/.exec(className || '');
-                  const codeString = String(children).replace(/\n$/, '');
-                  
-                  // Wrap the code copy functionality inside the custom renderer
-                  const handleCopyCode = async () => {
-                    try {
-                      await navigator.clipboard.writeText(codeString);
-                      // Visual feedback via a simple element target or ref might be complex in a map, 
-                      // but we can rely on standard CSS/hover or just let it copy silently for clean UI.
-                      // Alternatively, use a local state array if needed, but a simple alert is too intrusive.
-                    } catch {}
-                  };
-
-                  if (!inline && match) {
-                    return (
-                      <div className="relative mt-4 mb-4 rounded-xl overflow-hidden border border-[#2d2d45] bg-[#1e1e1e] group/code">
-                        <div className="flex items-center justify-between px-4 py-1.5 bg-[#2d2d45]/50 border-b border-[#2d2d45]">
-                          <span className="text-[10px] font-mono font-medium text-gray-400 uppercase tracking-wider">{match[1]}</span>
-                          <button 
-                            onClick={handleCopyCode}
-                            className="flex items-center gap-1.5 text-[10px] text-gray-400 hover:text-white transition-colors"
-                          >
-                            <Copy className="h-3 w-3" />
-                            <span>Copy code</span>
-                          </button>
-                        </div>
-                        <SyntaxHighlighter
-                          {...props}
-                          style={vscDarkPlus}
-                          language={match[1]}
-                          PreTag="div"
-                          customStyle={{ margin: 0, padding: '1rem', background: 'transparent' }}
-                        >
-                          {codeString}
-                        </SyntaxHighlighter>
-                      </div>
-                    );
-                  }
-                  return (
-                    <code {...props} className={className}>
-                      {children}
-                    </code>
-                  );
-                }
+                code: CodeBlock
               }}
             >
               {message.content}
