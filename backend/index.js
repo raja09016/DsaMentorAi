@@ -6,7 +6,8 @@ const chatRoute = require('./routes/chat');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({ origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5174', 'http://127.0.0.1:5174', 'http://localhost:3000'] }));
+// Allow all origins so Vercel can connect seamlessly
+app.use(cors());
 app.use(express.json());
 
 app.get('/health', (req, res) => {
@@ -20,6 +21,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong. Please try again.' });
 });
 
-app.listen(PORT, '127.0.0.1', () => {
-  console.log(`🚀 DSA Mentor AI backend running on http://127.0.0.1:${PORT}`);
+// Bind to 0.0.0.0 for external access in production (Railway/Render)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 DSA Mentor AI backend running on port ${PORT}`);
 });
