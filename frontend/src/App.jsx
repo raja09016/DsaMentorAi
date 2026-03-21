@@ -85,6 +85,7 @@ export default function App() {
         onClearChat={handleClearChat}
         darkMode={darkMode}
         onToggleDark={handleToggleDark}
+        hasMessages={messages.length > 0}
       />
       <ChatWindow
         messages={messages}
