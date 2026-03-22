@@ -39,7 +39,7 @@ function CodeBlock({ node, inline, className, children, ...props }) {
             <span>{isCopied ? 'Copied!' : 'Copy code'}</span>
           </button>
         </div>
-        <div className="not-prose text-sm">
+        <div className="not-prose text-sm overflow-x-auto custom-scrollbar">
           <SyntaxHighlighter
             {...props}
             style={vscDarkPlus}
