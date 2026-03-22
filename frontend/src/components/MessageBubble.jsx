@@ -28,8 +28,8 @@ function CodeBlock({ node, inline, className, children, ...props }) {
 
   if (!inline && match) {
     return (
-      <div className="relative mt-4 mb-4 rounded-xl overflow-hidden border border-[#2d2d45] bg-[#1e1e1e] group/code">
-        <div className="flex items-center justify-between px-4 py-1.5 bg-[#2d2d45]/50 border-b border-[#2d2d45]">
+      <div className="relative mt-4 mb-4 sm:rounded-xl overflow-hidden border-y sm:border border-[#2d2d45] sm:border-[#2d2d45] bg-[#1e1e1e] group/code -mx-3 sm:mx-0">
+        <div className="flex items-center justify-between px-3 sm:px-4 py-1.5 bg-[#2d2d45]/50 border-b border-[#2d2d45]">
           <span className="text-[10px] font-mono font-medium text-gray-400 uppercase tracking-wider">{match[1]}</span>
           <button 
             onClick={handleCopyCode}
@@ -45,7 +45,6 @@ function CodeBlock({ node, inline, className, children, ...props }) {
             style={vscDarkPlus}
             language={match[1]}
             PreTag="div"
-            wrapLongLines={true}
             customStyle={{ margin: 0, padding: '0.75rem 1rem', background: 'transparent' }}
           >
             {codeString}
@@ -96,8 +95,8 @@ export default function MessageBubble({ message }) {
         AI
       </div>
 
-      <div className="max-w-[95%] sm:max-w-[85%]">
-        <div className="relative rounded-2xl rounded-bl-sm border border-custom bg-surface px-3 sm:px-4 py-3 shadow-sm">
+      <div className="max-w-[calc(100%-40px)] sm:max-w-[85%]">
+        <div className="relative rounded-2xl rounded-bl-sm sm:border border-custom bg-surface px-3 sm:px-4 py-3 shadow-sm overflow-hidden">
           {/* Copy button */}
           <button
             onClick={handleCopy}
