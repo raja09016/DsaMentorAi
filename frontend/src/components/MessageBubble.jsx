@@ -39,15 +39,17 @@ function CodeBlock({ node, inline, className, children, ...props }) {
             <span>{isCopied ? 'Copied!' : 'Copy code'}</span>
           </button>
         </div>
-        <SyntaxHighlighter
-          {...props}
-          style={vscDarkPlus}
-          language={match[1]}
-          PreTag="div"
-          customStyle={{ margin: 0, padding: '1rem', background: 'transparent' }}
-        >
-          {codeString}
-        </SyntaxHighlighter>
+        <div className="not-prose text-sm">
+          <SyntaxHighlighter
+            {...props}
+            style={vscDarkPlus}
+            language={match[1]}
+            PreTag="div"
+            customStyle={{ margin: 0, padding: '1rem', background: 'transparent' }}
+          >
+            {codeString}
+          </SyntaxHighlighter>
+        </div>
       </div>
     );
   }
