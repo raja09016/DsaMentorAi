@@ -39,13 +39,13 @@ function CodeBlock({ node, inline, className, children, ...props }) {
             <span>{isCopied ? 'Copied!' : 'Copy code'}</span>
           </button>
         </div>
-        <div className="not-prose text-sm overflow-x-auto custom-scrollbar">
+        <div className="not-prose text-[13px] overflow-x-auto custom-scrollbar">
           <SyntaxHighlighter
             {...props}
             style={vscDarkPlus}
             language={match[1]}
             PreTag="div"
-            customStyle={{ margin: 0, padding: '1rem', background: 'transparent' }}
+            customStyle={{ margin: 0, padding: '0.75rem 1rem', background: 'transparent' }}
           >
             {codeString}
           </SyntaxHighlighter>
@@ -95,8 +95,8 @@ export default function MessageBubble({ message }) {
         AI
       </div>
 
-      <div className="max-w-[85%] sm:max-w-[75%]">
-        <div className="relative rounded-2xl rounded-bl-sm border border-custom bg-surface px-4 py-3 shadow-sm">
+      <div className="max-w-[95%] sm:max-w-[85%]">
+        <div className="relative rounded-2xl rounded-bl-sm border border-custom bg-surface px-3 sm:px-4 py-3 shadow-sm">
           {/* Copy button */}
           <button
             onClick={handleCopy}
@@ -111,7 +111,7 @@ export default function MessageBubble({ message }) {
           </button>
 
           {/* Markdown content */}
-          <div className="prose prose-sm max-w-none text-primary text-sm leading-relaxed pr-6">
+          <div className="prose prose-sm max-w-none text-primary text-sm leading-relaxed">
             <ReactMarkdown 
               remarkPlugins={[remarkGfm]}
               components={{
