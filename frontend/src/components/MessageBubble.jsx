@@ -45,6 +45,7 @@ function CodeBlock({ node, inline, className, children, ...props }) {
             style={vscDarkPlus}
             language={match[1]}
             PreTag="div"
+            wrapLongLines={true}
             customStyle={{ margin: 0, padding: '0.75rem 1rem', background: 'transparent' }}
           >
             {codeString}
