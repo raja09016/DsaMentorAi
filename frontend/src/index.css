@@ -100,6 +100,14 @@
   color: #a5b4fc;
 }
 
+/* Ensure our SyntaxHighlighter in not-prose is completely untouched */
+.not-prose code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  color: inherit !important;
+}
+
 .prose p { margin: 0.6rem 0; }
 .prose ul, .prose ol { padding-left: 1.4rem; margin: 0.5rem 0; }
 .prose li { margin: 0.25rem 0; }
